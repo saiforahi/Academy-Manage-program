@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/jl1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/mp3plugin.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/mysql-connector-java-5.1.45-bin.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/rs2xml.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/rt.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.14.2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.14.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.15.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.15.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.16.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.23.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.7.15-M1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.7.15-SNAPSHOT-2.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.7.15-SNAPSHOT-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.7.15-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.7.2-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.10.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.10.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.11.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.11.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.5-pre1.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc4-3.8.2-SNAPSHOT.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
