@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -18,6 +19,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
 import accounts.AccountWindow;
+import employees.EmployeeWindow;
 import registration.Registration;
 
 public class Menu {
@@ -123,8 +125,8 @@ public class Menu {
 			public void mouseClicked(MouseEvent e) {
 				frame.dispose();
 				AccountWindow go=new AccountWindow();
-				go.frmAccounts.setVisible(true);
-				go.frmAccounts.setLocationRelativeTo(null);;
+				go.frame.setVisible(true);
+				go.frame.setLocationRelativeTo(null);;
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -163,6 +165,10 @@ public class Menu {
 		lblEmployees.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				frame.dispose();
+				EmployeeWindow go=new EmployeeWindow();
+				go.frame.setVisible(true);
+				go.frame.setLocationRelativeTo(null);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -201,6 +207,7 @@ public class Menu {
 		lblCiller.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "Under Development");
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {

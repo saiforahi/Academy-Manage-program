@@ -3,32 +3,29 @@ package login;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
-import java.util.concurrent.TimeUnit;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.LineBorder;
-
-import com.sun.awt.AWTUtilities;
-
-import connections.sqlConnection;
-import menu.Menu;
-
 import java.awt.SystemColor;
-import javax.swing.JComboBox;
-import javax.swing.JPasswordField;
-import javax.swing.DefaultComboBoxModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.LineBorder;
+
+import connections.sqlConnection;
+import menu.Menu;
 
 public class Animation {
 
