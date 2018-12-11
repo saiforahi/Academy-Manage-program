@@ -4,12 +4,17 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -29,6 +34,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import connections.sqlConnection;
 import menu.Menu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -323,7 +329,23 @@ public class Registration {
 			public void mouseClicked(MouseEvent arg0) {
 				if(nameField.getText()!=null && cellField.getText()!=null && emailField.getText()!=null && addressField.getText()!=null && programField.getText()!=null && skimField.getText()!=null && downPaymentField.getText()!=null && imageLabel.getIcon()!=null)
 				{
-					Learner
+					
+					try {
+						ImageIcon imageicon = new ImageIcon(imageLabel.getIcon());
+						Learner newLearner=new Learner(,nameField.getText(),cellField.getText(),emailField.getText(),addressField.getText(),programField.getText());
+						Connection conn=sqlConnection.dbConnection();
+						PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects) VALUES (?, ?,?)");
+						pstmt.setString(1, emailField.getText());
+						pstmt.setString(2,nameField.getText());
+						pstmt.setObject(3,newLearner);
+						pstmt.executeUpdate();
+						pstmt.close();
+						conn.close();
+						JOptionPane.showMessageDialog(frame, "Learner's information saved!");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block  
+						e.printStackTrace();
+					}
 				}
 				else
 				{
@@ -346,7 +368,7 @@ public class Registration {
 		panel_1.add(lblAdd);
 		
 		JLabel label_2 = new JLabel("delete");
-		label_2.setBackground(new Color(255, 99, 71));
+		label_2.setBackground(new Color(255, 160, 122));
 		label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		label_2.setOpaque(true);
 		label_2.addMouseListener(new MouseAdapter() {

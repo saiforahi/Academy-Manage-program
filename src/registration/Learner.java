@@ -2,9 +2,7 @@ package registration;
 
 import java.util.Vector;
 
-import javax.swing.Icon;
-
-import com.sun.prism.Image;
+import java.awt.Image;
 
 public class Learner {
 	
@@ -14,9 +12,15 @@ public class Learner {
 	private Image image;
 	public Learner()
 	{
-		
+		name=new String();
+		cell=new String();
+		email=new String();
+		address=new String();
+		courseName=new String();
+		installments=new Vector<Installment>();
+		image=null;
 	}
-	public Learner(Icon givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName)
+	public Learner(Image givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName)
 	{
 		name=givenName;
 		cell=givenCell;
@@ -24,7 +28,7 @@ public class Learner {
 		address=givenAddress;
 		courseName=givenCourseName;
 		installments=new Vector<Installment>();
-		image=(Image) givenIcon;
+		image= givenIcon;
 	}
 	public void add_installment(Installment newInstallment)
 	{
