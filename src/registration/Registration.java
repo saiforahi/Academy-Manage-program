@@ -451,6 +451,14 @@ public class Registration {
 		lblClear.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				imageLabel.setIcon(null);
+				nameField.setText(null);
+				emailField.setText(null);
+				cellField.setText(null);
+				addressField.setText(null);
+				programField.setText(null);
+				skimField.setText(null);
+				downPaymentField.setText(null);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
