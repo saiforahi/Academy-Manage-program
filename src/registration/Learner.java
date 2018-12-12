@@ -2,6 +2,8 @@ package registration;
 
 import java.util.Vector;
 
+import javax.swing.Icon;
+
 import java.awt.Image;
 
 public class Learner {
@@ -9,7 +11,7 @@ public class Learner {
 	private String name,cell,email,address;
 	private String courseName;
 	private Vector<Installment> installments;
-	private Image image;
+	private Icon image=null;
 	public Learner()
 	{
 		name=new String();
@@ -20,7 +22,7 @@ public class Learner {
 		installments=new Vector<Installment>();
 		image=null;
 	}
-	public Learner(Image givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName)
+	public Learner(Icon givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName)
 	{
 		name=givenName;
 		cell=givenCell;

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -36,8 +37,6 @@ import javax.swing.table.DefaultTableModel;
 
 import connections.sqlConnection;
 import menu.Menu;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 public class Registration {
 
@@ -331,8 +330,7 @@ public class Registration {
 				{
 					
 					try {
-						ImageIcon imageicon = new ImageIcon(imageLabel.getIcon());
-						Learner newLearner=new Learner(,nameField.getText(),cellField.getText(),emailField.getText(),addressField.getText(),programField.getText());
+						Learner newLearner=new Learner(imageLabel.getIcon(),nameField.getText(),cellField.getText(),emailField.getText(),addressField.getText(),programField.getText());
 						Connection conn=sqlConnection.dbConnection();
 						PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects) VALUES (?, ?,?)");
 						pstmt.setString(1, emailField.getText());
