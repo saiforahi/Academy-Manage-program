@@ -12,7 +12,9 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -54,6 +56,7 @@ public class Registration {
 	private JTextField skimField;
 	private JTextField downPaymentField;
 	private JLabel lblNewLabel_2;
+	private Vector<String> learnerList=new Vector<String>();
 	/**
 	 * Launch the application.
 	 */
@@ -75,12 +78,28 @@ public class Registration {
 	 */
 	public Registration() {
 		initialize();
+		set_learnerList();
 	}
 	
-	public boolean find_learner(String emailAddress)
+	public void set_learnerList()
 	{
 		
-		return false;
+		try {
+			Connection temp=sqlConnection.dbConnection();
+			PreparedStatement pstmt = temp.prepareStatement("SELECT email FROM learners;");
+			ResultSet rs=pstmt.executeQuery();
+			learnerList.clear();
+			while(rs.next())
+			{
+				learnerList.add(rs.getString("email"));
+			}
+			rs.close();
+			pstmt.close();
+			temp.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -330,16 +349,33 @@ public class Registration {
 				{
 					
 					try {
-						Learner newLearner=new Learner(imageLabel.getIcon(),nameField.getText(),cellField.getText(),emailField.getText(),addressField.getText(),programField.getText());
-						Connection conn=sqlConnection.dbConnection();
-						PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects) VALUES (?, ?,?)");
-						pstmt.setString(1, emailField.getText());
-						pstmt.setString(2,nameField.getText());
-						pstmt.setObject(3,newLearner);
-						pstmt.executeUpdate();
-						pstmt.close();
-						conn.close();
-						JOptionPane.showMessageDialog(frame, "Learner's information saved!");
+						boolean found=false;
+						for(int index=0;index<learnerList.size();index++)
+						{
+							if(learnerList.get(index).toString().equals(emailField.getText()))
+							{
+								found=true;
+								break;
+							}
+						}
+						if(found==false)
+						{
+							Learner newLearner=new Learner(imageLabel.getIcon(),nameField.getText(),cellField.getText(),emailField.getText(),addressField.getText(),programField.getText());
+							Connection conn=sqlConnection.dbConnection();
+							PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects) VALUES (?, ?,?)");
+							pstmt.setString(1, emailField.getText());
+							pstmt.setString(2,nameField.getText());
+							pstmt.setObject(3,newLearner);
+							pstmt.executeUpdate();
+							pstmt.close();
+							conn.close();
+							learnerList.add(newLearner.get_email());
+							JOptionPane.showMessageDialog(frame, "Learner's information saved!");
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(frame, "A entry already exists with this email, enter another email..");
+						}
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block  
 						e.printStackTrace();

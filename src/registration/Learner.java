@@ -1,10 +1,7 @@
 package registration;
 
 import java.util.Vector;
-
 import javax.swing.Icon;
-
-import java.awt.Image;
 
 public class Learner {
 	
@@ -56,7 +53,7 @@ public class Learner {
 	{
 		return courseName;
 	}
-	public Image get_picture()
+	public Icon get_picture()
 	{
 		return image;
 	}
