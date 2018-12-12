@@ -15,8 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -79,6 +79,7 @@ public class Registration {
 	public Registration() {
 		initialize();
 		set_learnerList();
+		setComboModel();
 	}
 	
 	public void set_learnerList()
@@ -100,6 +101,13 @@ public class Registration {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setComboModel() {
+		comboBox.setModel(new DefaultComboBoxModel(learnerList.toArray()));
+		comboBox.setSelectedIndex(-1);
+		
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -370,6 +378,7 @@ public class Registration {
 							pstmt.close();
 							conn.close();
 							learnerList.add(newLearner.get_email());
+							setComboModel();
 							JOptionPane.showMessageDialog(frame, "Learner's information saved!");
 						}
 						else
