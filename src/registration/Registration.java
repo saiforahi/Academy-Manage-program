@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -231,8 +232,73 @@ public class Registration {
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Null");
-		lblNewLabel_1.setBounds(22, 84, 477, 90);
+		lblNewLabel_1.setBounds(22, 84, 360, 90);
 		panel.add(lblNewLabel_1);
+		
+		JLabel lblUpdate = new JLabel("update");
+		lblUpdate.setBounds(439, 84, 60, 30);
+		panel.add(lblUpdate);
+		lblUpdate.setBackground(new Color(240, 230, 140));
+		lblUpdate.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		lblUpdate.setOpaque(true);
+		lblUpdate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
+		lblUpdate.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUpdate.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		JLabel label_2 = new JLabel("delete");
+		label_2.setBounds(439, 125, 60, 30);
+		panel.add(label_2);
+		label_2.setBackground(new Color(255, 160, 122));
+		label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		label_2.setOpaque(true);
+		label_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(comboBox.getSelectedIndex()!=-1)
+				{
+					int dialogResult = JOptionPane.showConfirmDialog (frame, "Do you want to completely delete this learner's information?");
+					if(dialogResult == JOptionPane.YES_OPTION){
+						try {
+							String toDeleteLearnerEmail=comboBox.getSelectedItem().toString();
+							Connection temp=sqlConnection.dbConnection();
+							Statement delete=temp.createStatement();
+							delete.execute("DELETE FROM learners WHERE email='"+toDeleteLearnerEmail+"';");
+							delete.close();
+							temp.close();
+							set_learnerList();
+							setComboModel();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					
+				}
+				else
+					JOptionPane.showMessageDialog(frame, "No learner has been selected");
+			}
+			public void mouseEntered(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
+		label_2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_2.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(SystemColor.windowBorder, 1, true));
@@ -407,51 +473,8 @@ public class Registration {
 		lblAdd.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAdd.setBorder(BorderFactory.createLineBorder(Color.black));
 		lblAdd.setOpaque(true);
-		lblAdd.setBounds(287, 240, 60, 30);
+		lblAdd.setBounds(344, 240, 60, 30);
 		panel_1.add(lblAdd);
-		
-		JLabel label_2 = new JLabel("delete");
-		label_2.setBackground(new Color(255, 160, 122));
-		label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-		label_2.setOpaque(true);
-		label_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			}
-			public void mouseEntered(MouseEvent e) {
-				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
-		});
-		label_2.setHorizontalAlignment(SwingConstants.CENTER);
-		label_2.setBorder(BorderFactory.createLineBorder(Color.black));
-		label_2.setBounds(357, 240, 60, 30);
-		panel_1.add(label_2);
-		
-		JLabel lblUpdate = new JLabel("update");
-		lblUpdate.setBackground(new Color(240, 230, 140));
-		lblUpdate.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-		lblUpdate.setOpaque(true);
-		lblUpdate.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
-		});
-		lblUpdate.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUpdate.setBorder(BorderFactory.createLineBorder(Color.black));
-		lblUpdate.setBounds(427, 240, 60, 30);
-		panel_1.add(lblUpdate);
 		
 		JLabel lblClear = new JLabel("clear");
 		lblClear.setBackground(new Color(255, 250, 250));
@@ -480,7 +503,7 @@ public class Registration {
 		});
 		lblClear.setHorizontalAlignment(SwingConstants.CENTER);
 		lblClear.setBorder(BorderFactory.createLineBorder(Color.black));
-		lblClear.setBounds(497, 240, 60, 30);
+		lblClear.setBounds(429, 240, 60, 30);
 		panel_1.add(lblClear);
 	}
 }
