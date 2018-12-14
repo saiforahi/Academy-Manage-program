@@ -37,9 +37,10 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import connections.sqlConnection;
 import menu.Menu;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Registration {
 
@@ -132,30 +133,38 @@ public class Registration {
 		frame.setTitle("Academi");
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setLocationRelativeTo(null);
-		frame.setBounds(100, 100, 894, 589);
+		frame.setBounds(100, 100, 894, 613);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(SystemColor.inactiveCaptionText, 2));
 		panel.setBackground(SystemColor.info);
-		panel.setBounds(23, 24, 843, 185);
+		panel.setBounds(23, 21, 843, 204);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		comboBox = new JComboBox<Object>();
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if(comboBox.getSelectedIndex()>-1)
+				{
+					System.out.println(comboBox.getSelectedItem());
+				}
+			}
+		});
 		comboBox.setBounds(22, 23, 477, 26);
 		AutoCompleteFind.enable(comboBox);
 		panel.add(comboBox);
 		
 		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(522, 11, 311, 163);
+		panel_4.setBounds(522, 11, 311, 182);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 		panel_4.setBackground(SystemColor.activeCaptionBorder);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBackground(new Color(0, 0, 0, 65));
-		scrollPane.setBounds(10, 11, 291, 141);
+		scrollPane.setBounds(10, 11, 291, 160);
 		panel_4.add(scrollPane);
 		
 		table = new JTable();
@@ -236,7 +245,7 @@ public class Registration {
 		panel.add(lblNewLabel_1);
 		
 		JLabel lblUpdate = new JLabel("update");
-		lblUpdate.setBounds(439, 84, 60, 30);
+		lblUpdate.setBounds(439, 101, 60, 30);
 		panel.add(lblUpdate);
 		lblUpdate.setBackground(new Color(240, 230, 140));
 		lblUpdate.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
@@ -258,7 +267,7 @@ public class Registration {
 		lblUpdate.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		JLabel label_2 = new JLabel("delete");
-		label_2.setBounds(439, 125, 60, 30);
+		label_2.setBounds(439, 142, 60, 30);
 		panel.add(label_2);
 		label_2.setBackground(new Color(255, 160, 122));
 		label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
@@ -304,7 +313,7 @@ public class Registration {
 		panel_1.setBorder(new LineBorder(SystemColor.windowBorder, 1, true));
 		panel_1.setBackground(SystemColor.info);
 		panel_1.setLayout(null);
-		panel_1.setBounds(23, 220, 843, 314);
+		panel_1.setBounds(23, 236, 843, 314);
 		frame.getContentPane().add(panel_1);
 		
 		panel_3 = new JPanel();
@@ -505,5 +514,11 @@ public class Registration {
 		lblClear.setBorder(BorderFactory.createLineBorder(Color.black));
 		lblClear.setBounds(429, 240, 60, 30);
 		panel_1.add(lblClear);
+		
+		JLabel lblLabSymbiotic = new JLabel("\u00A9LAB Symbiotic");
+		lblLabSymbiotic.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblLabSymbiotic.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLabSymbiotic.setBounds(365, 560, 148, 14);
+		frame.getContentPane().add(lblLabSymbiotic);
 	}
 }
