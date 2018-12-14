@@ -92,22 +92,22 @@ public class Menu {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 34));
-				lblAccounts.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblCiller.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblEmployees.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+				lblAdmission.setFont(new Font("Nyala", Font.BOLD, 34));
+				lblAccounts.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblCiller.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblEmployees.setFont(new Font("Nyala", Font.BOLD, 24));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+				lblAdmission.setFont(new Font("Nyala", Font.BOLD, 24));
 			}
 		});
 		lblAdmission.setOpaque(true);
 		lblAdmission.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAdmission.setForeground(new Color(240, 230, 140));
-		lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-		lblAdmission.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+		lblAdmission.setForeground(Color.WHITE);
+		lblAdmission.setFont(new Font("Nyala", Font.BOLD, 24));
+		lblAdmission.setBorder(new LineBorder(new Color(255, 255, 255), 4));
 		lblAdmission.setBackground(new Color(70, 130, 180));
 		lblAdmission.setBounds(40, 35, 186, 147);
 		panel.add(lblAdmission);
@@ -131,25 +131,25 @@ public class Menu {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblAccounts.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblCiller.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblEmployees.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+				lblAdmission.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblAccounts.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblCiller.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblEmployees.setFont(new Font("Nyala", Font.BOLD, 24));
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblAccounts.setFont(new Font("Comic Sans MS", Font.BOLD, 34));
-				lblCiller.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblEmployees.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+				lblAdmission.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblAccounts.setFont(new Font("Nyala", Font.BOLD, 34));
+				lblCiller.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblEmployees.setFont(new Font("Nyala", Font.BOLD, 24));
 			}
 		});
 		lblAccounts.setOpaque(true);
 		lblAccounts.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAccounts.setForeground(new Color(240, 230, 140));
-		lblAccounts.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-		lblAccounts.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+		lblAccounts.setForeground(Color.WHITE);
+		lblAccounts.setFont(new Font("Nyala", Font.BOLD, 24));
+		lblAccounts.setBorder(new LineBorder(new Color(255, 255, 255), 4));
 		lblAccounts.setBackground(new Color(70, 130, 180));
 		lblAccounts.setBounds(39, 36, 187, 147);
 		panel_1.add(lblAccounts);
@@ -173,27 +173,27 @@ public class Menu {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblAccounts.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblCiller.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblEmployees.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+				lblAdmission.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblAccounts.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblCiller.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblEmployees.setFont(new Font("Nyala", Font.BOLD, 24));
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblAccounts.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblCiller.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblEmployees.setFont(new Font("Comic Sans MS", Font.BOLD, 34));
+				lblAdmission.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblAccounts.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblCiller.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblEmployees.setFont(new Font("Nyala", Font.BOLD, 34));
 			}
 		});
 		lblEmployees.setBackground(new Color(70, 130, 180));
 		lblEmployees.setBounds(39, 38, 186, 147);
 		panel_3.add(lblEmployees);
 		lblEmployees.setOpaque(true);
-		lblEmployees.setBorder(new LineBorder(new Color(255, 255, 255), 2));
-		lblEmployees.setForeground(new Color(240, 230, 140));
-		lblEmployees.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+		lblEmployees.setBorder(new LineBorder(new Color(255, 255, 255), 4));
+		lblEmployees.setForeground(Color.WHITE);
+		lblEmployees.setFont(new Font("Nyala", Font.BOLD, 24));
 		lblEmployees.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel panel_2 = new JPanel();
@@ -212,25 +212,25 @@ public class Menu {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblAccounts.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblCiller.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblEmployees.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+				lblAdmission.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblAccounts.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblCiller.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblEmployees.setFont(new Font("Nyala", Font.BOLD, 24));
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				lblAdmission.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblAccounts.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-				lblCiller.setFont(new Font("Comic Sans MS", Font.BOLD, 34));
-				lblEmployees.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
+				lblAdmission.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblAccounts.setFont(new Font("Nyala", Font.BOLD, 24));
+				lblCiller.setFont(new Font("Nyala", Font.BOLD, 34));
+				lblEmployees.setFont(new Font("Nyala", Font.BOLD, 24));
 			}
 		});
 		lblCiller.setOpaque(true);
 		lblCiller.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCiller.setForeground(new Color(240, 230, 140));
-		lblCiller.setFont(new Font("Comic Sans MS", Font.BOLD, 24));
-		lblCiller.setBorder(new LineBorder(new Color(255, 255, 255), 2));
+		lblCiller.setForeground(Color.WHITE);
+		lblCiller.setFont(new Font("Nyala", Font.BOLD, 24));
+		lblCiller.setBorder(new LineBorder(new Color(255, 255, 255), 4));
 		lblCiller.setBackground(new Color(70, 130, 180));
 		lblCiller.setBounds(40, 39, 187, 147);
 		panel_2.add(lblCiller);
