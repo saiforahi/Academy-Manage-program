@@ -1,14 +1,20 @@
 package registration;
 
+import java.io.Serializable;
 import java.util.Vector;
 import javax.swing.Icon;
 
-public class Learner {
+public class Learner implements Serializable  {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name,cell,email,address;
 	private String courseName;
+	private int skimTotal,downPayment;
 	private Vector<Installment> installments;
-	private Icon image=null;
+	private Icon picture;
 	public Learner()
 	{
 		name=new String();
@@ -17,9 +23,10 @@ public class Learner {
 		address=new String();
 		courseName=new String();
 		installments=new Vector<Installment>();
-		image=null;
+		skimTotal=0;
+		downPayment=0;
 	}
-	public Learner(Icon givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName)
+	public Learner(Icon givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName,int skimAmount,int downPaymentAmount)
 	{
 		name=givenName;
 		cell=givenCell;
@@ -27,7 +34,8 @@ public class Learner {
 		address=givenAddress;
 		courseName=givenCourseName;
 		installments=new Vector<Installment>();
-		image= givenIcon;
+		skimTotal=skimAmount;
+		downPayment=downPaymentAmount;
 	}
 	public void add_installment(Installment newInstallment)
 	{
@@ -53,9 +61,13 @@ public class Learner {
 	{
 		return courseName;
 	}
-	public Icon get_picture()
-	{
-		return image;
-	}
 	
+	public int get_skimTotal()
+	{
+		return skimTotal;
+	}
+	public int get_downPayment()
+	{
+		return downPayment;
+	}
 }

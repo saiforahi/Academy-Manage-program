@@ -31,19 +31,6 @@ public class sqlConnection {
 				return null;
 			}
 		}
-		public static Connection answerDBConnection(){
-			try{
-				Class.forName("org.sqlite.JDBC");
-				Connection conn=DriverManager.getConnection("jdbc:sqlite:Answer\\Answers.db");
-				//Connection conn=DriverManager.getConnection("jdbc:sqlite::resource:BirdsEyeDatabase.db");
-				//JOptionPane.showMessageDialog(null,"database Connected");
-				return conn;
-			}
-			catch(Exception e){
-				JOptionPane.showMessageDialog(null,"database problem  "+e.getMessage());
-				return null;
-			}
-		}
 		
 		 private byte[] readFile(String file) {
 		        ByteArrayOutputStream bos = null;
