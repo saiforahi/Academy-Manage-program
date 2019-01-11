@@ -12,7 +12,7 @@ public class Learner implements Serializable  {
 	private static final long serialVersionUID = 1L;
 	private String name,cell,email,address;
 	private String courseName;
-	private int skimTotal,downPayment;
+	private int skimTotal,downPayment,dueAmount;
 	private Vector<Installment> installments;
 	private Icon picture;
 	public Learner()
@@ -25,6 +25,8 @@ public class Learner implements Serializable  {
 		installments=new Vector<Installment>();
 		skimTotal=0;
 		downPayment=0;
+		dueAmount=0;
+		picture=null;
 	}
 	public Learner(Icon givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName,int skimAmount,int downPaymentAmount)
 	{
@@ -36,6 +38,8 @@ public class Learner implements Serializable  {
 		installments=new Vector<Installment>();
 		skimTotal=skimAmount;
 		downPayment=downPaymentAmount;
+		dueAmount=skimTotal-downPayment;
+		picture=givenIcon;
 	}
 	public void add_installment(Installment newInstallment)
 	{
@@ -69,5 +73,21 @@ public class Learner implements Serializable  {
 	public int get_downPayment()
 	{
 		return downPayment;
+	}
+	public Vector<Installment> get_Installments()
+	{
+		return installments;
+	}
+	public Icon get_picture()
+	{
+		return picture;
+	}
+	public int get_due()
+	{
+		return dueAmount;
+	}
+	public void set_due(int newValue)
+	{
+		dueAmount=newValue;
 	}
 }

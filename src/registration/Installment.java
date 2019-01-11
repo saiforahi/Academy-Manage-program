@@ -1,8 +1,14 @@
 package registration;
 
-public class Installment {
-	String date;
-	int amount;
+import java.io.Serializable;
+
+public class Installment implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String date;
+	private int amount;
 	
 	public Installment()
 	{

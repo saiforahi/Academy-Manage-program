@@ -24,11 +24,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,8 +47,6 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -53,7 +55,6 @@ import javax.swing.table.DefaultTableModel;
 import connections.sqlConnection;
 import menu.Menu;
 
-@SuppressWarnings("unused")
 public class Registration {
 
 	public JFrame frame;
@@ -66,15 +67,17 @@ public class Registration {
 	private JLabel imageLabel;
 	private JTable table;
 	private JList<String> list;
-	
-	@SuppressWarnings("rawtypes")
-	private DefaultListModel  learnerNameList=null;
+	private DefaultListModel<String>  learnerNameList=null;
 	DefaultTableCellRenderer centerRenderer;
 	private JTextField skimField;
 	private JTextField downPaymentField;
 	private JLabel lblNewLabel_2;
 	private Vector<Learner> learnerList=new Vector<Learner>();
 	FileInputStream stream=null;  
+	private JTextField textField;
+	private JTextField searchField;
+	private JLabel searchButton;
+	private JComboBox<String> comboBox;
 	/**
 	 * Launch the application.
 	 */
@@ -97,10 +100,9 @@ public class Registration {
 	public Registration() {
 		set_learnerList();
 		initialize();
-		setComboModel();
+		sqlConnection.setPicture(searchButton, "search_icon");
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void set_learnerList() 
 	{
 		
@@ -134,7 +136,7 @@ public class Registration {
 		}
 	}
 	
-	public Learner get_learner(String emailAddress)
+	public void update_learner(String emailAddress,int amount)
 	{
 		try {
 			Connection temp=sqlConnection.dbConnection();
@@ -149,7 +151,13 @@ public class Registration {
 			rs.close();
 			pstmt.close();
 			temp.close();
-			return dummy;
+			
+			delete_learner(dummy);
+			String date=ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME).toString();
+			System.out.println(date+" "+amount);
+			dummy.add_installment(new Installment(date,amount));
+			dummy.set_due(dummy.get_due()-amount);
+			add_learner(dummy);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -160,15 +168,39 @@ public class Registration {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
 	}
 	
-	@SuppressWarnings({ })
-	public void setComboModel() {
+	public void add_learner(Learner newLearner) throws SQLException, IOException
+	{
+		Connection conn=sqlConnection.dbConnection();
+		PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects) VALUES (?,?,?)");
+		pstmt.setString(1, emailField.getText());
+		pstmt.setString(2,nameField.getText());
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    ObjectOutputStream oos = new ObjectOutputStream(baos);
+	    oos.writeObject(newLearner);
+	    byte[] objectAsBytes = baos.toByteArray();
+	    ByteArrayInputStream bais = new ByteArrayInputStream(objectAsBytes);
+	    pstmt.setBinaryStream(3, bais, objectAsBytes.length);
+		pstmt.executeUpdate();
+		pstmt.close();
+		conn.close();
+		learnerList.add(learnerList.size(),newLearner);
+		learnerNameList.addElement(newLearner.get_email());
 	}
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	public void delete_learner(Learner toDeleteLearner) throws SQLException
+	{
+		Connection conn=sqlConnection.dbConnection();
+		Statement delete=conn.createStatement();
+		delete.execute("DELETE FROM Learners WHERE email='"+toDeleteLearner.get_email()+"';");
+		delete.close();
+		conn.close();
+		list.getSelectionModel().clearSelection();
+		learnerNameList.removeElement(toDeleteLearner.get_email());
+		learnerList.remove(toDeleteLearner);
+		
+	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 		centerRenderer = new DefaultTableCellRenderer();
@@ -206,62 +238,22 @@ public class Registration {
 		panel.setLayout(null);
 		
 		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(22, 372, 311, 182);
+		panel_4.setBounds(22, 244, 422, 182);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 		panel_4.setBackground(SystemColor.activeCaptionBorder);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBackground(new Color(0, 0, 0, 65));
-		scrollPane.setBounds(10, 11, 291, 160);
+		scrollPane.setBounds(10, 11, 402, 160);
 		panel_4.add(scrollPane);
 		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
-				{null, null, null},
 			},
 			new String[] {
-				"      Date", " Installment", "    Balance"
+				"      Date", " Installment", "    Due"
 			}
 		) {
 			/**
@@ -286,15 +278,16 @@ public class Registration {
 		
 		JLabel lblNewLabel = new JLabel("Report");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel.setBounds(22, 247, 48, 20);
+		lblNewLabel.setBounds(22, 510, 48, 20);
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Null");
-		lblNewLabel_1.setBounds(22, 271, 360, 90);
+		lblNewLabel_1.setBounds(22, 534, 422, 159);
+		lblNewLabel_1.setBorder(BorderFactory.createLineBorder(Color.black));
 		panel.add(lblNewLabel_1);
 		
 		JLabel lblUpdate = new JLabel("update");
-		lblUpdate.setBounds(370, 432, 60, 30);
+		lblUpdate.setBounds(297, 158, 60, 30);
 		panel.add(lblUpdate);
 		lblUpdate.setBackground(new Color(240, 230, 140));
 		lblUpdate.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
@@ -316,7 +309,7 @@ public class Registration {
 		lblUpdate.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		JLabel label_2 = new JLabel("delete");
-		label_2.setBounds(370, 483, 60, 30);
+		label_2.setBounds(367, 158, 60, 30);
 		panel.add(label_2);
 		label_2.setBackground(new Color(255, 160, 122));
 		label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
@@ -354,7 +347,6 @@ public class Registration {
 							rs.close();
 							pstmt.close();
 							temp2.close();
-							setComboModel();
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -404,6 +396,24 @@ public class Registration {
 						temp.close();
 						nameField.setText(dummy.get_name());
 						emailField.setText(dummy.get_email());
+						cellField.setText(dummy.get_cell());
+						addressField.setText(dummy.get_address());
+						programField.setText(dummy.get_courseName());
+						skimField.setText(Integer.toString(dummy.get_skimTotal()));
+						downPaymentField.setText(Integer.toString(dummy.get_downPayment()));
+						imageLabel.setIcon(dummy.get_picture());
+						DefaultTableModel model = (DefaultTableModel) table.getModel();
+						int due=dummy.get_skimTotal();
+						for(int index=0;index<dummy.get_Installments().size();index++)
+						{
+							model.addRow(new Object[]{dummy.get_Installments().elementAt(index).get_date(),dummy.get_Installments().elementAt(index).get_amount(),Integer.toString(due-dummy.get_Installments().elementAt(index).get_amount())});
+							due=due-dummy.get_Installments().elementAt(index).get_amount();
+						}
+						
+						//centerRenderer = new DefaultTableCellRenderer();
+						//table.getColumn("Date").setCellRenderer( centerRenderer );
+						//table.getColumn("Installment").setCellRenderer( centerRenderer );
+						//table.getColumn("Due").setCellRenderer( centerRenderer );
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -425,28 +435,103 @@ public class Registration {
 		lblViewDetails.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		lblViewDetails.setBorder(BorderFactory.createLineBorder(Color.black));
 		lblViewDetails.setBackground(new Color(240, 230, 140));
-		lblViewDetails.setBounds(284, 21, 109, 26);
+		lblViewDetails.setBounds(297, 121, 129, 26);
 		panel.add(lblViewDetails);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(22, 21, 250, 212);
+		scrollPane_1.setBounds(22, 80, 265, 153);
 		panel.add(scrollPane_1);
 		
 		list = new JList(learnerNameList);
+		list.setBorder(new LineBorder(new Color(0, 0, 0)));
 		list.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		list.setBackground(Color.LIGHT_GRAY);
+		list.setBackground(new Color(240, 248, 255));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.addListSelectionListener(
-				new ListSelectionListener() {
-
-					@Override
-					public void valueChanged(ListSelectionEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-		});
 		scrollPane_1.setViewportView(list);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_5.setBounds(22, 437, 422, 62);
+		panel.add(panel_5);
+		panel_5.setLayout(null);
+		
+		JLabel lblAddPayment = new JLabel("Add payment");
+		lblAddPayment.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblAddPayment.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddPayment.setBounds(10, 11, 106, 38);
+		panel_5.add(lblAddPayment);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		textField.setHorizontalAlignment(SwingConstants.CENTER);
+		textField.setBounds(121, 11, 178, 38);
+		panel_5.add(textField);
+		textField.setColumns(10);
+		
+		JLabel payButton = new JLabel("Pay!");
+		payButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(emailField.getText().equals(list.getSelectedValue()))
+				{
+					update_learner(emailField.getText().toString(),Integer.parseInt(textField.getText().toString().trim()));
+					DefaultTableModel model = (DefaultTableModel) table.getModel();
+					model.addRow(new Object[]{ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME).toString(),textField.getText(),Integer.toString(Integer.parseInt(table.getValueAt(table.getRowCount()-1, 2).toString())-Integer.parseInt(textField.getText().trim().toString()))});
+					JOptionPane.showMessageDialog(frame, "Learner's information updated!");
+				}
+			}
+		});
+		payButton.setFont(new Font("Tahoma", Font.BOLD, 16));
+		payButton.setHorizontalAlignment(SwingConstants.CENTER);
+		payButton.setBorder(BorderFactory.createLineBorder(Color.black));
+		payButton.setBounds(309, 15, 93, 31);
+		panel_5.add(payButton);
+		
+		searchField = new JTextField();
+		searchField.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		searchField.setHorizontalAlignment(SwingConstants.CENTER);
+		searchField.setBounds(22, 39, 265, 30);
+		panel.add(searchField);
+		searchField.setColumns(10);
+		
+		searchButton = new JLabel("New label");
+		searchButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(!searchField.getText().equals(null)&& !searchField.getText().equals(""))
+				{
+					if(comboBox.getSelectedItem().equals("Email"))
+					{
+						for(int index=0;index<learnerNameList.size();index++)
+						{
+							if(learnerNameList.getElementAt(index).toString().equalsIgnoreCase(searchField.getText()))
+							{
+								list.setSelectedIndex(index);
+							}
+						}
+					}
+					else if(comboBox.getSelectedItem().equals("Name"))
+					{
+						for(int index=0;index<learnerList.size();index++)
+						{
+							if(learnerList.elementAt(index).get_name().equalsIgnoreCase(searchField.getText()))
+							{
+								list.setSelectedIndex(index);
+							}
+						}
+					}
+				}
+			}
+		});
+		searchButton.setBounds(365, 40, 62, 29);
+		searchButton.setBorder(BorderFactory.createLineBorder(Color.black));
+		panel.add(searchButton);
+		
+		comboBox = new JComboBox();
+		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Email", "Name"}));
+		comboBox.setBounds(295, 39, 60, 30);
+		panel.add(comboBox);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(SystemColor.windowBorder, 1, true));
@@ -589,7 +674,7 @@ public class Registration {
 						{
 							Learner newLearner=new Learner(imageLabel.getIcon(),nameField.getText(),cellField.getText(),emailField.getText(),addressField.getText(),programField.getText(),Integer.parseInt(skimField.getText()),Integer.parseInt(downPaymentField.getText()));
 							Connection conn=sqlConnection.dbConnection();
-							PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects,image) VALUES (?,?,?,?)");
+							PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects) VALUES (?,?,?)");
 							pstmt.setString(1, emailField.getText());
 							pstmt.setString(2,nameField.getText());
 							
@@ -601,17 +686,17 @@ public class Registration {
 						    ByteArrayInputStream bais = new ByteArrayInputStream(objectAsBytes);
 						    pstmt.setBinaryStream(3, bais, objectAsBytes.length);
 						    
-							pstmt.setBinaryStream(4, stream,stream.available());
+							//pstmt.setBinaryStream(4, stream,stream.available());
 							pstmt.executeUpdate();
 							pstmt.close();
 							conn.close();
 							learnerList.add(learnerList.size(),newLearner);
-							setComboModel();
+							learnerNameList.addElement(newLearner.get_email());
 							JOptionPane.showMessageDialog(frame, "Learner's information saved!");
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(frame, "A entry already exists with this email, enter another email..");
+							JOptionPane.showMessageDialog(frame, "An entry already exists with this email, enter another email..");
 						}
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block  
@@ -656,6 +741,9 @@ public class Registration {
 				programField.setText(null);
 				skimField.setText(null);
 				downPaymentField.setText(null);
+				DefaultTableModel model=(DefaultTableModel) table.getModel();
+				model.setRowCount(0);
+				textField.setText(null);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
