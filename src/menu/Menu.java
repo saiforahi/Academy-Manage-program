@@ -29,6 +29,7 @@ public class Menu {
 	private JLabel lblAccounts;
 	private JLabel lblEmployees;
 	private JLabel lblCiller;
+	public static String userName=null;
 
 	/**
 	 * Launch the application.
@@ -57,6 +58,7 @@ public class Menu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		userName=new String();
 		try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {

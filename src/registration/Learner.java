@@ -15,6 +15,7 @@ public class Learner implements Serializable  {
 	private int skimTotal,downPayment,dueAmount;
 	private Vector<Installment> installments;
 	private Icon picture;
+	private String report;
 	public Learner()
 	{
 		name=new String();
@@ -27,8 +28,9 @@ public class Learner implements Serializable  {
 		downPayment=0;
 		dueAmount=0;
 		picture=null;
+		report=new String();
 	}
-	public Learner(Icon givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName,int skimAmount,int downPaymentAmount)
+	public Learner(Icon givenIcon,String givenName,String givenCell,String givenEmail,String givenAddress,String givenCourseName,int skimAmount,int downPaymentAmount,String givenReport)
 	{
 		name=givenName;
 		cell=givenCell;
@@ -40,6 +42,7 @@ public class Learner implements Serializable  {
 		downPayment=downPaymentAmount;
 		dueAmount=skimTotal-downPayment;
 		picture=givenIcon;
+		report = givenReport;
 	}
 	public void add_installment(Installment newInstallment)
 	{
@@ -89,5 +92,13 @@ public class Learner implements Serializable  {
 	public void set_due(int newValue)
 	{
 		dueAmount=newValue;
+	}
+	public String get_report()
+	{
+		return report;
+	}
+	public void set_report(String newReport)
+	{
+		report=newReport;
 	}
 }
