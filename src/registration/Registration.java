@@ -40,6 +40,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -55,7 +56,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import connections.sqlConnection;
+import login.Animation;
 import menu.Menu;
+import javax.swing.ScrollPaneConstants;
 
 public class Registration {
 
@@ -154,13 +157,10 @@ public class Registration {
 			rs.close();
 			pstmt.close();
 			temp.close();
-			
 			delete_learner(dummy);
 			String date=ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME).toString();
-			System.out.println(date+" "+amount);
 			dummy.add_installment(new Installment(date,amount));
 			dummy.set_due(dummy.get_due()-amount);
-			
 			add_learner(dummy);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -236,7 +236,7 @@ public class Registration {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(SystemColor.inactiveCaptionText, 2));
-		panel.setBackground(SystemColor.info);
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(878, 21, 467, 716);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -253,10 +253,10 @@ public class Registration {
 		panel.add(lblNewLabel_1);
 		
 		JLabel lblUpdate = new JLabel("update");
-		lblUpdate.setBounds(314, 202, 60, 30);
+		lblUpdate.setBounds(314, 210, 60, 30);
 		panel.add(lblUpdate);
-		lblUpdate.setBackground(new Color(240, 230, 140));
-		lblUpdate.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		lblUpdate.setBackground(new Color(255, 255, 255));
+		lblUpdate.setFont(new Font("Consolas", Font.PLAIN, 14));
 		lblUpdate.setOpaque(true);
 		lblUpdate.addMouseListener(new MouseAdapter() {
 			@Override
@@ -272,13 +272,13 @@ public class Registration {
 			}
 		});
 		lblUpdate.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUpdate.setBorder(BorderFactory.createLineBorder(Color.black));
+		lblUpdate.setBorder(new LineBorder(new Color(102, 205, 170), 2));
 		
 		JLabel label_2 = new JLabel("delete");
-		label_2.setBounds(384, 202, 60, 30);
+		label_2.setBounds(384, 210, 60, 30);
 		panel.add(label_2);
-		label_2.setBackground(new Color(255, 160, 122));
-		label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		label_2.setBackground(new Color(255, 255, 255));
+		label_2.setFont(new Font("Consolas", Font.PLAIN, 14));
 		label_2.setOpaque(true);
 		label_2.addMouseListener(new MouseAdapter() {
 			@Override
@@ -308,6 +308,8 @@ public class Registration {
 							    Learner dummy=(Learner)ois1.readObject();
 								learnerList.add(learnerList.size(), dummy);
 								learnerNameList.addElement(dummy.get_email());
+								ois1.close();
+								baip.close();
 							}
 							
 							rs.close();
@@ -338,7 +340,7 @@ public class Registration {
 			}
 		});
 		label_2.setHorizontalAlignment(SwingConstants.CENTER);
-		label_2.setBorder(BorderFactory.createLineBorder(Color.black));
+		label_2.setBorder(new LineBorder(new Color(139, 0, 0), 2));
 		
 		JLabel lblViewDetails = new JLabel("view details");
 		lblViewDetails.addMouseListener(new MouseAdapter() {
@@ -351,6 +353,7 @@ public class Registration {
 						PreparedStatement pstmt = temp.prepareStatement("SELECT objects FROM learners WHERE email=?;");
 						pstmt.setString(1,list.getSelectedValue().toString());
 						ResultSet rs=pstmt.executeQuery();
+						System.out.println(rs.getRow());
 						byte[] byteStream = (byte[]) rs.getObject(1);
 					    ByteArrayInputStream baip = new ByteArrayInputStream(byteStream);
 					    ObjectInputStream ois1 = new ObjectInputStream(baip);
@@ -394,14 +397,14 @@ public class Registration {
 		});
 		lblViewDetails.setOpaque(true);
 		lblViewDetails.setHorizontalAlignment(SwingConstants.CENTER);
-		lblViewDetails.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
-		lblViewDetails.setBorder(BorderFactory.createLineBorder(Color.black));
-		lblViewDetails.setBackground(new Color(240, 230, 140));
-		lblViewDetails.setBounds(314, 165, 129, 26);
+		lblViewDetails.setFont(new Font("Consolas", Font.PLAIN, 14));
+		lblViewDetails.setBorder(new LineBorder(new Color(255, 255, 0), 2));
+		lblViewDetails.setBackground(new Color(255, 255, 255));
+		lblViewDetails.setBounds(314, 173, 129, 26);
 		panel.add(lblViewDetails);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(22, 141, 282, 92);
+		scrollPane_1.setBounds(22, 141, 282, 121);
 		scrollPane_1.setBackground(Color.WHITE);
 		scrollPane_1.setOpaque(true);
 		scrollPane_1.setBorder(BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),"Learners",TitledBorder.CENTER,TitledBorder.TOP,new Font("times new roman",Font.PLAIN,15), Color.black));
@@ -414,6 +417,7 @@ public class Registration {
 		scrollPane_1.setViewportView(list);
 		
 		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(new Color(255, 255, 255));
 		panel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_5.setBounds(22, 469, 422, 62);
 		panel.add(panel_5);
@@ -436,9 +440,18 @@ public class Registration {
 		payButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int dialogResult = JOptionPane.showConfirmDialog (frame, "This is dialougue box for Confirmation to proceed");
-				if(dialogResult == JOptionPane.YES_OPTION){
-					if(list.getSelectedIndex()>=1)
+				
+				if(list.getSelectedIndex()>=1)
+				{
+					JPanel panel = new JPanel();
+					JLabel label = new JLabel("Enter a password:");
+					JPasswordField pass = new JPasswordField(10);
+					pass.setHorizontalAlignment(SwingConstants.CENTER);
+					panel.add(label);
+					panel.add(pass);
+					String[] options = new String[]{"Proceed"};
+					int option = JOptionPane.showOptionDialog(null, panel, "Authentication",JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, null);
+					if(option == 0 && checkPassword(new String(pass.getPassword()))) // pressing OK button
 					{
 						for(int index=0;index<learnerList.size();index++)
 						{
@@ -452,19 +465,23 @@ public class Registration {
 								}
 								else
 									model.addRow(new Object[]{ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME).toString(),textField.getText(),Integer.toString(Integer.parseInt(table.getValueAt(table.getRowCount()-1, 2).toString())-Integer.parseInt(textField.getText().trim().toString()))});
+								textField.setText(null);
 								JOptionPane.showMessageDialog(frame, "Learner's information updated!");
 								break;
 							}
 						}
+						
 					}
+					else
+						JOptionPane.showMessageDialog(frame, "Wrong password entry");
+					
 				}
-				
 				
 			}
 		});
 		payButton.setFont(new Font("Tahoma", Font.BOLD, 16));
 		payButton.setHorizontalAlignment(SwingConstants.CENTER);
-		payButton.setBorder(BorderFactory.createLineBorder(Color.black));
+		payButton.setBorder(new LineBorder(new Color(139, 0, 0), 2));
 		payButton.setBounds(309, 15, 93, 31);
 		panel_5.add(payButton);
 		
@@ -515,13 +532,15 @@ public class Registration {
 		panel.add(comboBox);
 		
 		JLabel lblInvetory = new JLabel("CILL's Inventory");
-		lblInvetory.setFont(new Font("Segoe UI Symbol", Font.BOLD, 21));
+		lblInvetory.setFont(new Font("Consolas", Font.BOLD, 26));
 		lblInvetory.setHorizontalAlignment(SwingConstants.CENTER);
-		lblInvetory.setBounds(132, 21, 197, 62);
+		lblInvetory.setBounds(99, 21, 275, 62);
 		panel.add(lblInvetory);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBorder(BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),"Installments",TitledBorder.CENTER,TitledBorder.TOP,new Font("times new roman",Font.PLAIN,15), Color.black));
+		scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		//scrollPane.setBorder(BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),"Installments",TitledBorder.CENTER,TitledBorder.TOP,new Font("times new roman",Font.PLAIN,15), Color.black));
 		scrollPane.setBackground(Color.WHITE);
 		scrollPane.setBounds(22, 273, 422, 160);
 		panel.add(scrollPane);
@@ -557,14 +576,14 @@ public class Registration {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(SystemColor.windowBorder, 1, true));
-		panel_1.setBackground(SystemColor.info);
+		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setLayout(null);
-		panel_1.setBounds(21, 21, 843, 268);
+		panel_1.setBounds(21, 21, 843, 529);
 		frame.getContentPane().add(panel_1);
 		
 		panel_3 = new JPanel();
 		panel_3.setBackground(new Color(244, 164, 96));
-		panel_3.setBounds(10, 63, 147, 153);
+		panel_3.setBounds(68, 104, 179, 194);
 		panel_1.add(panel_3);
 		panel_3.setLayout(null);
 		
@@ -580,7 +599,7 @@ public class Registration {
 					chooser.setFileFilter(FileFilter);
 					chooser.showOpenDialog(null);
 					File selectedFile=chooser.getSelectedFile();
-					Icon image=new ImageIcon(((new ImageIcon(""+selectedFile)).getImage()).getScaledInstance(163,153, java.awt.Image.SCALE_SMOOTH));
+					Icon image=new ImageIcon(((new ImageIcon(""+selectedFile)).getImage()).getScaledInstance(imageLabel.getWidth(),imageLabel.getHeight(), java.awt.Image.SCALE_SMOOTH));
 					imageLabel.setIcon(image);
 					try {
 						stream=new FileInputStream(selectedFile.getAbsolutePath());
@@ -591,10 +610,10 @@ public class Registration {
 				}
 			}
 		});
-		imageLabel.setBounds(0, 0, 147, 153);
+		imageLabel.setBounds(0, 0, 187, 194);
 		panel_3.add(imageLabel);
 		imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		imageLabel.setBorder(new LineBorder(SystemColor.inactiveCaptionText));
+		imageLabel.setBorder(null);
 		imageLabel.setBackground(Color.WHITE);
 		
 		nameField = new JTextField();
@@ -603,7 +622,7 @@ public class Registration {
 		nameField.setForeground(Color.GRAY);
 		nameField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		nameField.setColumns(10);
-		nameField.setBounds(167, 63, 499, 30);
+		nameField.setBounds(283, 104, 499, 30);
 		panel_1.add(nameField);
 		
 		cellField = new JTextField();
@@ -612,7 +631,7 @@ public class Registration {
 		cellField.setForeground(Color.GRAY);
 		cellField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		cellField.setColumns(10);
-		cellField.setBounds(167, 104, 237, 30);
+		cellField.setBounds(283, 145, 237, 30);
 		panel_1.add(cellField);
 		
 		emailField = new JTextField();
@@ -621,7 +640,7 @@ public class Registration {
 		emailField.setForeground(Color.GRAY);
 		emailField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		emailField.setColumns(10);
-		emailField.setBounds(429, 104, 237, 30);
+		emailField.setBounds(545, 145, 237, 30);
 		panel_1.add(emailField);
 		
 		addressField = new JTextField();
@@ -630,7 +649,7 @@ public class Registration {
 		addressField.setForeground(Color.GRAY);
 		addressField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		addressField.setColumns(10);
-		addressField.setBounds(167, 145, 499, 30);
+		addressField.setBounds(283, 186, 499, 30);
 		panel_1.add(addressField);
 		
 		programField = new JTextField();
@@ -639,42 +658,11 @@ public class Registration {
 		programField.setForeground(Color.GRAY);
 		programField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		programField.setColumns(10);
-		programField.setBounds(167, 186, 499, 30);
+		programField.setBounds(283, 227, 499, 30);
 		panel_1.add(programField);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(676, 63, 157, 153);
-		panel_1.add(panel_2);
-		panel_2.setLayout(null);
-		
-		skimField = new JTextField();
-		skimField.setText("skim total");
-		skimField.setHorizontalAlignment(SwingConstants.CENTER);
-		skimField.setForeground(Color.GRAY);
-		skimField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		skimField.setColumns(10);
-		skimField.setBounds(20, 62, 116, 30);
-		panel_2.add(skimField);
-		
-		downPaymentField = new JTextField();
-		downPaymentField.setText("down payment");
-		downPaymentField.setHorizontalAlignment(SwingConstants.CENTER);
-		downPaymentField.setForeground(Color.GRAY);
-		downPaymentField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		downPaymentField.setColumns(10);
-		downPaymentField.setBounds(20, 103, 116, 30);
-		panel_2.add(downPaymentField);
-		
-		lblNewLabel_2 = new JLabel("Payments");
-		lblNewLabel_2.setForeground(new Color(70, 130, 180));
-		lblNewLabel_2.setFont(new Font("Comic Sans MS", Font.BOLD, 22));
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(20, 11, 116, 40);
-		panel_2.add(lblNewLabel_2);
-		
 		JLabel lblAdd = new JLabel("add/update");
-		lblAdd.setBackground(new Color(144, 238, 144));
+		lblAdd.setBackground(new Color(224, 255, 255));
 		lblAdd.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		lblAdd.addMouseListener(new MouseAdapter() {
 			@Override
@@ -698,7 +686,7 @@ public class Registration {
 							{
 								Learner newLearner=new Learner(imageLabel.getIcon(),nameField.getText(),cellField.getText(),emailField.getText(),addressField.getText(),programField.getText(),Integer.parseInt(skimField.getText()),Integer.parseInt(downPaymentField.getText()),null);
 								Connection conn=sqlConnection.dbConnection();
-								PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects) VALUES (?,?,?)");
+								PreparedStatement pstmt = conn.prepareStatement("INSERT INTO learners(email, name,objects) VALUES (?,?,?);");
 								pstmt.setString(1, emailField.getText());
 								pstmt.setString(2,nameField.getText());
 								
@@ -749,7 +737,7 @@ public class Registration {
 		lblAdd.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAdd.setBorder(BorderFactory.createLineBorder(Color.black));
 		lblAdd.setOpaque(true);
-		lblAdd.setBounds(298, 227, 104, 30);
+		lblAdd.setBounds(420, 337, 109, 37);
 		panel_1.add(lblAdd);
 		
 		JLabel lblClear = new JLabel("clear");
@@ -782,19 +770,76 @@ public class Registration {
 		});
 		lblClear.setHorizontalAlignment(SwingConstants.CENTER);
 		lblClear.setBorder(BorderFactory.createLineBorder(Color.black));
-		lblClear.setBounds(427, 227, 60, 30);
+		lblClear.setBounds(549, 337, 64, 37);
 		panel_1.add(lblClear);
 		
 		JLabel lblNewLabel_3 = new JLabel("Edition");
-		lblNewLabel_3.setFont(new Font("Consolas", Font.BOLD, 16));
+		lblNewLabel_3.setFont(new Font("Consolas", Font.BOLD, 18));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(342, 11, 157, 44);
+		lblNewLabel_3.setBounds(367, 31, 157, 44);
 		panel_1.add(lblNewLabel_3);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(68, 321, 179, 153);
+		panel_1.add(panel_2);
+		panel_2.setBackground(Color.WHITE);
+		panel_2.setLayout(null);
+		
+		skimField = new JTextField();
+		skimField.setText("skim total");
+		skimField.setHorizontalAlignment(SwingConstants.CENTER);
+		skimField.setForeground(Color.GRAY);
+		skimField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		skimField.setColumns(10);
+		skimField.setBounds(31, 62, 116, 30);
+		panel_2.add(skimField);
+		
+		downPaymentField = new JTextField();
+		downPaymentField.setText("down payment");
+		downPaymentField.setHorizontalAlignment(SwingConstants.CENTER);
+		downPaymentField.setForeground(Color.GRAY);
+		downPaymentField.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		downPaymentField.setColumns(10);
+		downPaymentField.setBounds(31, 103, 116, 30);
+		panel_2.add(downPaymentField);
+		
+		lblNewLabel_2 = new JLabel("Payments");
+		lblNewLabel_2.setForeground(new Color(70, 130, 180));
+		lblNewLabel_2.setFont(new Font("Consolas", Font.BOLD, 22));
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(31, 11, 116, 40);
+		panel_2.add(lblNewLabel_2);
 		
 		JLabel lblLabSymbiotic = new JLabel("\u00A9LAB Symbiotic");
 		lblLabSymbiotic.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblLabSymbiotic.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLabSymbiotic.setBounds(362, 705, 148, 14);
+		lblLabSymbiotic.setBounds(468, 723, 148, 14);
 		frame.getContentPane().add(lblLabSymbiotic);
+	}
+	
+	public boolean checkPassword(String givenPassword)
+	{
+		boolean result=false;
+		try
+		{
+			Connection temp=sqlConnection.dbConnection();
+			ResultSet rs=temp.createStatement().executeQuery("SELECT * FROM users;");
+			
+			while(rs.next())
+			{
+				if(Animation.userName.equalsIgnoreCase(rs.getString("name"))&&rs.getString("password").equals(givenPassword))
+				{
+					result=true;
+				}
+			}
+			rs.close();
+			temp.close();
+			return result;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			return result;
+		}
 	}
 }

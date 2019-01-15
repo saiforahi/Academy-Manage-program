@@ -1,23 +1,31 @@
 package employees;
 
-public class Salary {
-	private String monthName;
+import java.io.Serializable;
+
+public class Salary implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String date;
 	private int amount;
-	
+	private String paidBy;
 	public Salary()
 	{
-		monthName=new String();
+		date=new String();
 		amount=0;
+		paidBy=null;
 	}
-	public Salary(String givenMonth,int givenAmount)
+	public Salary(String givenDate,int givenAmount,String namePaidBy)
 	{
-		monthName=givenMonth;
+		date=givenDate;
 		amount=givenAmount;
+		paidBy=namePaidBy;
 	}
 	
-	public String get_monthName()
+	public String get_date()
 	{
-		return monthName;
+		return date;
 	}
 	
 	public int get_amount()
@@ -25,12 +33,8 @@ public class Salary {
 		return amount;
 	}
 	
-	public void set_month(String newMonthName)
+	public String get_paidBy()
 	{
-		monthName=newMonthName;
-	}
-	public void set_amount(int newAmount)
-	{
-		amount=newAmount;
+		return paidBy;
 	}
 }

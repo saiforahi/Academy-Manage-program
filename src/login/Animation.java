@@ -52,6 +52,7 @@ public class Animation {
 	private JPasswordField passwordField;
 	private JPanel panel;
 	private JComboBox<String> comboBox;
+	public static String userName="admin";
 	/**
 	 * Launch the application.
 	 */
@@ -281,6 +282,7 @@ public class Animation {
 										if(rs.getString("password").equalsIgnoreCase(new String(passwordField.getPassword())))
 										{
 											matched=true;
+											userName=comboBox.getSelectedItem().toString();
 											frame.dispose();
 											Menu go=new Menu();
 											go.frame.setVisible(true);

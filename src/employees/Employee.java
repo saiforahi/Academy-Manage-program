@@ -1,8 +1,17 @@
 package employees;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Employee {
+import javax.swing.Icon;
+
+import accounts.Payment;
+
+public class Employee implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String cellNumber,email;
 	private String NID,passportNo;
@@ -10,8 +19,10 @@ public class Employee {
 	private String fatherName,motherName,spouseName;
 	private String presentAddress,permanentAddress;
 	private int salaryPerMonth;
-	private Vector<Salary> payments;
-	
+	private String joiningDate;
+	private Vector<Payment> payments;
+	private String ID;
+	private Icon picture;
 	public Employee()
 	{
 		name=null;
@@ -26,11 +37,16 @@ public class Employee {
 		presentAddress=null;
 		permanentAddress=null;
 		salaryPerMonth=0;
-		payments=new Vector<Salary>();
+		payments=new Vector<Payment>();
+		ID=new String();
+		joiningDate=null;
+		picture=null;
 	}
 	
-	public Employee(String givenName,String givenCell,String givenEmail,String givenNID,String givenPassportNo,String givenDesignation,String givenFatherName,String givenMotherName,String givenSpouseName,String givenPresentAddress,String givenPermanentAddress,int givenSalaryPerMonth )
+	public Employee(String givenID,Icon givenIcon,String givenName,String givenCell,String givenEmail,String givenNID,String givenPassportNo,String givenDesignation,String givenFatherName,String givenMotherName,String givenSpouseName,String givenPresentAddress,String givenPermanentAddress,int givenSalaryPerMonth,String givenJoiningDate )
 	{
+		ID=givenID;
+		picture=givenIcon;
 		name=givenName;
 		cellNumber=givenCell;
 		email=givenEmail;
@@ -43,7 +59,8 @@ public class Employee {
 		presentAddress=givenPresentAddress;
 		permanentAddress=givenPermanentAddress;
 		salaryPerMonth=givenSalaryPerMonth;
-		payments=new Vector<Salary>();
+		payments=new Vector<Payment>();
+		joiningDate=givenJoiningDate;
 	}
 	public String get_name()
 	{
@@ -81,7 +98,7 @@ public class Employee {
 	{
 		return motherName;
 	}
-	public String get_spuseName()
+	public String get_spouseName()
 	{
 		return spouseName;
 	}
@@ -97,10 +114,25 @@ public class Employee {
 	{
 		return salaryPerMonth;
 	}
-	public void add_payment(Salary newPayment)
+	public void add_payment(Payment newPayment)
 	{
 		payments.add(newPayment);
 	}
 	
-	
+	public String get_ID()
+	{
+		return ID;
+	}
+	public String get_joiningDate()
+	{
+		return joiningDate;
+	}
+	public Icon get_picture()
+	{
+		return picture;
+	}
+	public Vector<Payment> get_payments()
+	{
+		return payments;
+	}
 }

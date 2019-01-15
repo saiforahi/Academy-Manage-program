@@ -30,14 +30,12 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
@@ -45,34 +43,30 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-
 import connections.sqlConnection;
 import menu.Menu;
 import javax.swing.JList;
+import javax.swing.border.EtchedBorder;
+import javax.swing.ScrollPaneConstants;
 
 public class AccountWindow {
 
 	public JFrame frame;
 	private JTextField txtAmount;
 	private JLabel lblNewLabel_1;
-	private JTable expenseTable;
 	private JLabel dateLabel;
 	Thread MrCounter;
 	private boolean runMrCounter=true;
 	private JTextPane purposeField;
-	private JCheckBox chckbxOfficial;
-	private JTextField textField;
-	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JCheckBox chckbxUnofficial;
-	private JComboBox<String> comboBox;
 	private JList<String> list;
 	private DefaultListModel<String>  collectionList=null;
+	private DefaultListModel<String>  expenseList=null;
 	private JLabel timeLabel;
-	private JLabel dateField;
+	private static JLabel dateField;
 	/**
 	 * Launch the application.
 	 */
@@ -89,6 +83,35 @@ public class AccountWindow {
 		});
 	}
 	
+	public static void add_payment(String date,Payment newPayment)
+	{
+		try
+		{
+			Connection temp=sqlConnection.dbConnection();
+			PreparedStatement insertStatement=temp.prepareStatement("INSERT INTO expenses(date,object) VALUES (?,?);");
+		    insertStatement.setString(1,date);
+		    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		    ObjectOutputStream oos = new ObjectOutputStream(baos);
+		    oos.writeObject(newPayment);
+		    byte[] objectAsBytes = baos.toByteArray();
+		    ByteArrayInputStream bais = new ByteArrayInputStream(objectAsBytes);
+		    insertStatement.setBinaryStream(2, bais, objectAsBytes.length);
+		    insertStatement.executeUpdate();
+		    bais.close();
+		    oos.close();
+		    baos.close();
+		    insertStatement.close();
+		    temp.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	public void set_CollectionTable()
 	{
 		collectionList.clear();
@@ -102,8 +125,41 @@ public class AccountWindow {
 			    ByteArrayInputStream baip = new ByteArrayInputStream(byteStream);
 			    ObjectInputStream ois1 = new ObjectInputStream(baip);
 			    Collection dummy=(Collection)ois1.readObject();
-			    collectionList.addElement(dummy.get_collectionDate()+" "+dummy.get_collectionAmount()+" BDT");
+			    collectionList.addElement(dummy.get_collectionDate()+"          "+dummy.get_collectionAmount()+" BDT");
 			   
+			}
+			rs.close();
+			conn.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void set_expensesList()
+	{
+		expenseList.clear();
+		try
+		{
+			Connection conn=sqlConnection.dbConnection();
+			ResultSet rs=conn.createStatement().executeQuery("SELECT object FROM expenses;");
+			while(rs.next())
+			{
+				byte[] byteStream = (byte[]) rs.getObject(1);
+			    ByteArrayInputStream baip = new ByteArrayInputStream(byteStream);
+			    ObjectInputStream ois1 = new ObjectInputStream(baip);
+			    Payment dummy=(Payment)ois1.readObject();
+			    expenseList.addElement(dummy.get_payment_date()+" "+dummy.get_paid_amount()+" BDT");
+			    ois1.close();
+			    baip.close();
 			}
 			rs.close();
 			conn.close();
@@ -126,6 +182,7 @@ public class AccountWindow {
 	public AccountWindow() {
 		initialize();
 		set_CollectionTable();
+		set_expensesList();
 		MrCounter.start();
 	}
 
@@ -134,6 +191,7 @@ public class AccountWindow {
 	 */
 	private void initialize() {
 		collectionList=new DefaultListModel<String>();
+		expenseList=new DefaultListModel<String>();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -162,7 +220,7 @@ public class AccountWindow {
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(37, 276, 787, 412);
+		panel.setBounds(35, 35, 787, 412);
 		frame.getContentPane().add(panel);
 		panel.setBackground(SystemColor.text);
 		panel.setLayout(null);
@@ -276,10 +334,13 @@ public class AccountWindow {
 		panel.add(separator);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_2.setViewportBorder(new TitledBorder(null, "Collections", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		scrollPane_2.setOpaque(true);
-		scrollPane_2.setBorder(BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),"Collections",TitledBorder.CENTER,TitledBorder.TOP,new Font("times new roman",Font.PLAIN,15), Color.black));
+		//scrollPane_2.setBorder(BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),"Collections",TitledBorder.CENTER,TitledBorder.TOP,new Font("times new roman",Font.PLAIN,15), Color.black));
 		scrollPane_2.setBackground(Color.WHITE);
-		scrollPane_2.setBounds(36, 134, 247, 92);
+		scrollPane_2.setBounds(36, 90, 247, 136);
 		panel.add(scrollPane_2);
 		
 		list = new JList<String>(collectionList);
@@ -291,7 +352,7 @@ public class AccountWindow {
 		label.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		label.setBorder(BorderFactory.createLineBorder(Color.black));
 		label.setBackground(new Color(240, 230, 140));
-		label.setBounds(302, 168, 109, 29);
+		label.setBounds(302, 146, 109, 29);
 		panel.add(label);
 		
 		JLabel lblPaidBy = new JLabel("Collected by :");
@@ -319,50 +380,69 @@ public class AccountWindow {
 		panel.add(lblSource);
 		
 		JLabel lblSearchBy = new JLabel("Search by");
-		lblSearchBy.setBounds(36, 101, 56, 22);
+		lblSearchBy.setBounds(36, 57, 56, 22);
 		panel.add(lblSearchBy);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.WHITE);
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_1.setBounds(37, 35, 692, 215);
-		frame.getContentPane().add(panel_1);
-		panel_1.setLayout(null);
+		JTextPane textPane_1 = new JTextPane();
+		textPane_1.setBounds(130, 321, 284, 80);
+		panel.add(textPane_1);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(876, 276, 452, 412);
+		panel_2.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
+		panel_2.setBounds(876, 35, 452, 653);
 		frame.getContentPane().add(panel_2);
-		panel_2.setBackground(new Color(255, 250, 250));
+		panel_2.setBackground(new Color(255, 255, 255));
 		panel_2.setLayout(null);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 11, 432, 390);
-		scrollPane_1.setBackground(Color.WHITE);
-		scrollPane_1.setForeground(Color.WHITE);
-		scrollPane_1.setBorder(BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),"Expenses",TitledBorder.CENTER,TitledBorder.TOP,new Font("times new roman",Font.PLAIN,15), Color.black));
-		panel_2.add(scrollPane_1);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setViewportBorder(new TitledBorder(null, "Expenses", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		scrollPane.setOpaque(true);
+		//scrollPane.setBorder(BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),"Expenses",TitledBorder.CENTER,TitledBorder.TOP,new Font("times new roman",Font.PLAIN,15), Color.black));
+		scrollPane.setBackground(Color.WHITE);
+		scrollPane.setBounds(40, 83, 268, 296);
+		panel_2.add(scrollPane);
 		
-		expenseTable = new JTable();
-		expenseTable.setBackground(Color.WHITE);
-		expenseTable.setModel(new DefaultTableModel(
-				new Object[][] {
-					
-				},
-				new String[] {
-					"      Date", " Amount"
-				}
-			));
-		scrollPane_1.setViewportView(expenseTable);
+		JList<String> list_1 = new JList<String>((expenseList));
+		scrollPane.setViewportView(list_1);
+		
+		JLabel label_1 = new JLabel("Collected by :");
+		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		label_1.setBounds(40, 390, 84, 22);
+		panel_2.add(label_1);
+		
+		JLabel label_3 = new JLabel("Date :");
+		label_3.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		label_3.setBounds(40, 414, 84, 22);
+		panel_2.add(label_3);
+		
+		JLabel label_6 = new JLabel("Amount :");
+		label_6.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_6.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		label_6.setBounds(40, 436, 84, 22);
+		panel_2.add(label_6);
+		
+		JLabel label_7 = new JLabel("Source :");
+		label_7.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_7.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		label_7.setBounds(40, 458, 84, 22);
+		panel_2.add(label_7);
+		
+		JTextPane textPane = new JTextPane();
+		textPane.setBounds(134, 458, 276, 163);
+		panel_2.add(textPane);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(new Color(255, 69, 0));
 		separator_1.setBackground(new Color(255, 99, 71));
-		separator_1.setBounds(851, 276, 15, 404);
+		separator_1.setBounds(851, 35, 15, 645);
 		frame.getContentPane().add(separator_1);
 		
 		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(739, 35, 589, 215);
+		panel_4.setBounds(349, 458, 473, 215);
 		frame.getContentPane().add(panel_4);
 		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_4.setBackground(Color.WHITE);
@@ -372,32 +452,18 @@ public class AccountWindow {
 		lblMakeAPayment.setForeground(new Color(139, 69, 19));
 		lblMakeAPayment.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblMakeAPayment.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMakeAPayment.setBounds(228, 11, 122, 19);
+		lblMakeAPayment.setBounds(176, 11, 122, 19);
 		panel_4.add(lblMakeAPayment);
-		
-		chckbxOfficial = new JCheckBox("Official");
-		chckbxOfficial.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(chckbxOfficial.isSelected())
-				{
-					chckbxUnofficial.setSelected(false);
-				}
-			}
-		});
-		chckbxOfficial.setBackground(new Color(255, 255, 255));
-		chckbxOfficial.setHorizontalAlignment(SwingConstants.CENTER);
-		chckbxOfficial.setBounds(30, 37, 59, 23);
-		panel_4.add(chckbxOfficial);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_5.setBackground(new Color(255, 255, 255));
-		panel_5.setBounds(209, 41, 166, 163);
+		panel_5.setBounds(25, 41, 224, 152);
 		panel_4.add(panel_5);
 		panel_5.setLayout(null);
 		
 		JTextPane txtpnWriteDownPurpose = new JTextPane();
-		txtpnWriteDownPurpose.setBounds(10, 11, 146, 141);
+		txtpnWriteDownPurpose.setBounds(10, 11, 204, 130);
 		panel_5.add(txtpnWriteDownPurpose);
 		txtpnWriteDownPurpose.setBackground(new Color(255, 255, 255));
 		txtpnWriteDownPurpose.setText("write down purpose of payment");
@@ -408,84 +474,49 @@ public class AccountWindow {
 			public void actionPerformed(ActionEvent arg0) {
 				if(chckbxUnofficial.isSelected())
 				{
-					chckbxOfficial.setSelected(false);
+					
 				}
 			}
 		});
 		chckbxUnofficial.setHorizontalAlignment(SwingConstants.CENTER);
 		chckbxUnofficial.setBackground(Color.WHITE);
-		chckbxUnofficial.setBounds(476, 37, 89, 23);
+		chckbxUnofficial.setBounds(359, 44, 89, 23);
 		panel_4.add(chckbxUnofficial);
-		
-		JLabel lblEmployee = new JLabel("Employee");
-		lblEmployee.setHorizontalAlignment(SwingConstants.LEFT);
-		lblEmployee.setBounds(30, 77, 59, 19);
-		panel_4.add(lblEmployee);
-		
-		comboBox = new JComboBox<String>();
-		comboBox.setBounds(87, 77, 102, 19);
-		panel_4.add(comboBox);
-		
-		JLabel lblAmount = new JLabel("Amount");
-		lblAmount.setHorizontalAlignment(SwingConstants.LEFT);
-		lblAmount.setBounds(30, 107, 48, 19);
-		panel_4.add(lblAmount);
-		
-		textField = new JTextField();
-		textField.setBounds(87, 107, 102, 20);
-		panel_4.add(textField);
-		textField.setColumns(10);
-		
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setHorizontalAlignment(SwingConstants.LEFT);
-		lblPassword.setBounds(30, 137, 48, 19);
-		panel_4.add(lblPassword);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(87, 136, 102, 20);
-		panel_4.add(textField_1);
-		
-		JLabel lblPay = new JLabel("Pay!");
-		lblPay.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblPay.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPay.setBounds(72, 169, 89, 28);
-		panel_4.add(lblPay);
 		
 		JLabel lblPayTo = new JLabel("Pay to");
 		lblPayTo.setHorizontalAlignment(SwingConstants.LEFT);
-		lblPayTo.setBounds(506, 77, 59, 19);
+		lblPayTo.setBounds(389, 84, 59, 19);
 		panel_4.add(lblPayTo);
 		
 		JLabel label_2 = new JLabel("Amount");
 		label_2.setHorizontalAlignment(SwingConstants.LEFT);
-		label_2.setBounds(506, 107, 59, 19);
+		label_2.setBounds(389, 114, 59, 19);
 		panel_4.add(label_2);
 		
 		JLabel label_4 = new JLabel("Password");
 		label_4.setHorizontalAlignment(SwingConstants.LEFT);
-		label_4.setBounds(506, 137, 59, 19);
+		label_4.setBounds(389, 144, 59, 19);
 		panel_4.add(label_4);
 		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
-		textField_2.setBounds(394, 106, 102, 20);
+		textField_2.setBounds(277, 113, 102, 20);
 		panel_4.add(textField_2);
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
-		textField_3.setBounds(394, 77, 102, 20);
+		textField_3.setBounds(277, 84, 102, 20);
 		panel_4.add(textField_3);
 		
 		textField_4 = new JTextField();
 		textField_4.setColumns(10);
-		textField_4.setBounds(394, 136, 102, 20);
+		textField_4.setBounds(277, 143, 102, 20);
 		panel_4.add(textField_4);
 		
 		JLabel label_5 = new JLabel("Pay!");
 		label_5.setHorizontalAlignment(SwingConstants.CENTER);
 		label_5.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_5.setBounds(435, 169, 89, 28);
+		label_5.setBounds(318, 176, 89, 28);
 		panel_4.add(label_5);
 		frame.setLocationRelativeTo(null);
 		
