@@ -1,6 +1,18 @@
 package classes;
 
-public class User {
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import connections.sqlConnection;
+import login.Animation;
+
+public class User implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String name;
 	String password;
 	String type;
@@ -33,5 +45,7 @@ public class User {
 	{
 		return type;
 	}
+	
+	
 
 }

@@ -14,7 +14,7 @@ public class Collection implements Serializable{
 	private String collectionTime;
 	private String collectionPurpose;
 	private int collectionAmount;
-	
+	private String collectionNo;
 	public Collection()
 	{
 		collectorName=new String();
@@ -22,15 +22,17 @@ public class Collection implements Serializable{
 		collectionTime=new String();
 		collectionPurpose=new String();
 		collectionAmount=0;
+		collectionNo=null;
 	}
 	
-	public Collection(String givenUserName,String givenDate,String givenTime,String givenPurpose,int amount)
+	public Collection(String givenNo,String givenUserName,String givenDate,String givenTime,String givenPurpose,int amount)
 	{
 		collectorName=givenUserName;
 		collectionDate=givenDate;
 		collectionTime=givenTime;
 		collectionPurpose=givenPurpose;
 		collectionAmount=amount;
+		collectionNo=givenNo;
 	}
 	
 	public String get_collectorName()
@@ -45,7 +47,7 @@ public class Collection implements Serializable{
 	{
 		return collectionTime;
 	}
-	public String get_collectionPurpose()
+	public String get_collectionSource()
 	{
 		return collectionPurpose;
 	}
@@ -53,5 +55,8 @@ public class Collection implements Serializable{
 	{
 		return collectionAmount;
 	}
-
+	public String get_collectionNo()
+	{
+		return collectionNo;
+	}
 }

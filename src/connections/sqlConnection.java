@@ -22,8 +22,7 @@ public class sqlConnection {
 		public static Connection dbConnection(){
 			try{
 				Class.forName("org.sqlite.JDBC");
-				Connection conn=DriverManager.getConnection("jdbc:sqlite:D:\\Workshop\\CILL - Manager\\Data\\CILLDataBase.db");
-				//Connection conn=DriverManager.getConnection("jdbc:sqlite:Data\\CILLDataBase.db");
+				Connection conn=DriverManager.getConnection("jdbc:sqlite:"+System.getProperty("user.dir") + "\\Data\\CILLDataBase.db");
 				return conn;
 			}
 			catch(Exception e){

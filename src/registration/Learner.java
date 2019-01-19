@@ -101,4 +101,37 @@ public class Learner implements Serializable  {
 	{
 		report=newReport;
 	}
+	
+	public void set_name(String newName)
+	{
+		name=newName;
+	}
+	public void set_cell(String newCell)
+	{
+		cell=newCell;
+	}
+	public void set_address(String newAddress)
+	{
+		address=newAddress;
+	}
+	public void set_courseName(String newcourseName)
+	{
+		courseName=newcourseName;
+	}
+	public void set_skimTotal(int newSkim)
+	{
+		skimTotal=newSkim;
+	}
+	public void set_downPayment(int newdownPayment)
+	{
+		downPayment=newdownPayment;
+	}
+	public void set_picture(Icon newPicture)
+	{
+		picture=newPicture;
+	}
+	public void erase_installments()
+	{
+		installments.clear();
+	}
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="external_lib/jl1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="external_lib/mp3plugin.jar"/>
 	<classpathentry exported="true" kind="lib" path="external_lib/mysql-connector-java-5.1.45-bin.jar"/>
@@ -28,5 +27,7 @@
 	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc-3.8.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="external_lib/sqlite-jdbc4-3.8.2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.xtend.XTEND_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

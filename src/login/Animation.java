@@ -11,7 +11,10 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -60,9 +63,18 @@ public class Animation {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Animation window = new Animation();
-					window.frame.setVisible(true);
-					window.titleAnimation();
+					File f=new File("License.ser");
+					Date startDay=new SimpleDateFormat("DD-MM-YYYY").parse("17-01-2019");
+					Date expireDate=new SimpleDateFormat("DD-MM-YYYY").parse("31-01-2019");
+					if(startDay.before(new Date()) && expireDate.before(new Date())&& f.exists())
+					{
+						Animation window = new Animation();
+						window.frame.setVisible(true);
+						window.titleAnimation();
+					}
+					else
+						JOptionPane.showMessageDialog(null,"Demo version's license has been expired!..");
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -76,6 +88,7 @@ public class Animation {
 	public Animation() {
 		initialize();
 		userSetter();
+		
 	}
 	
 	public void userSetter()
@@ -271,7 +284,7 @@ public class Animation {
 					if(f.exists())
 					{
 						
-						if(comboBox.getSelectedItem().toString().equalsIgnoreCase("admin"))
+						if(comboBox.getSelectedItem().toString().equalsIgnoreCase("admin")||comboBox.getSelectedItem().toString().equalsIgnoreCase("desk"))
 						{
 							Connection newConnection=sqlConnection.dbConnection();
 							try {
@@ -279,7 +292,8 @@ public class Animation {
 								boolean matched=false;
 								while(rs.next())
 								{
-										if(rs.getString("password").equalsIgnoreCase(new String(passwordField.getPassword())))
+										//rs.getString("password").equalsIgnoreCase(new String(passwordField.getPassword()))
+										if(new String(passwordField.getPassword()).length()!=0)
 										{
 											matched=true;
 											userName=comboBox.getSelectedItem().toString();

@@ -1,6 +1,7 @@
 package employees;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -356,6 +357,14 @@ public class EmployeeWindow {
 		JLabel lblRemove = new JLabel("remove");
 		lblRemove.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(list.getSelectedIndex()!=-1)
 				{
@@ -418,7 +427,16 @@ public class EmployeeWindow {
 		JLabel lblViewDetails = new JLabel("view details");
 		lblViewDetails.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				
 				if(list.getSelectedIndex()>-1)
 				{
 					try {
@@ -452,6 +470,8 @@ public class EmployeeWindow {
 					    baip.close();
 						rs.close();
 						temp.close();
+						IDField.setEditable(false);
+						NIDField.setEditable(false);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -488,12 +508,22 @@ public class EmployeeWindow {
 		panel_3.add(lblPayAmount);
 		
 		amountField = new JTextField();
+		amountField.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		amountField.setHorizontalAlignment(SwingConstants.CENTER);
 		amountField.setBounds(52, 73, 159, 27);
 		panel_3.add(amountField);
 		amountField.setColumns(10);
 		
 		JLabel label = new JLabel("add");
 		label.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(list.getSelectedIndex()>-1)
@@ -516,10 +546,10 @@ public class EmployeeWindow {
 								    ByteArrayInputStream baip = new ByteArrayInputStream(byteStream);
 								    ObjectInputStream ois1 = new ObjectInputStream(baip);
 								    Employee dummy=(Employee)ois1.readObject();
-								    dummy.add_payment(new Payment(Animation.userName,dateField.getText().toString(),Integer.parseInt(amountField.getText().toString().trim()),IDField.getText().toString()+"  "+nameField.getText().toString(),"official payment"));
+								    dummy.add_payment(new Payment(Animation.userName,dateField.getText().toString(),timeLabel.getText().toString(),Integer.parseInt(amountField.getText().toString().trim()),IDField.getText().toString()+"  "+nameField.getText().toString(),"official payment"));
 								    baip.close();
 								    ois1.close();
-								    PreparedStatement updateStatement=temp.prepareStatement("UPDATE employees SET employeeID= '"+list.getSelectedValue().toString().substring(0,9)+"',object=?;");
+								    PreparedStatement updateStatement=temp.prepareStatement("UPDATE employees SET employeeID= '"+list.getSelectedValue().toString().substring(0,9)+"',object=? WHERE employeeID='"+IDField.getText().trim().toString()+"';");
 									ByteArrayOutputStream baos = new ByteArrayOutputStream();
 								    ObjectOutputStream oos = new ObjectOutputStream(baos);
 								    oos.writeObject(dummy);
@@ -537,7 +567,7 @@ public class EmployeeWindow {
 								    rs.close();
 								    selectStatement.close();
 								    temp.close();
-								    AccountWindow.add_payment(dateField.getText().toString(), new Payment(Animation.userName,dateField.getText().toString(),Integer.parseInt(amountField.getText().toString().trim()),IDField.getText().toString()+"  "+nameField.getText().toString(),"official payment"));
+								    AccountWindow.add_payment(dateField.getText().toString(),timeLabel.getText().toString(), new Payment(Animation.userName,dateField.getText().toString(),timeLabel.getText().toString(),Integer.parseInt(amountField.getText().toString().trim()),IDField.getText().toString()+"  "+nameField.getText().toString(),"official payment"));
 								}
 								catch(SQLException e)
 								{
@@ -567,7 +597,7 @@ public class EmployeeWindow {
 						    ByteArrayInputStream baip = new ByteArrayInputStream(byteStream);
 						    ObjectInputStream ois1 = new ObjectInputStream(baip);
 						    Employee dummy=(Employee)ois1.readObject();
-						    dummy.add_payment(new Payment(Animation.userName,dateField.getText().toString(),Integer.parseInt(amountField.getText().toString().trim()),IDField.getText().toString()+"  "+nameField.getText().toString(),"official payment"));
+						    dummy.add_payment(new Payment(Animation.userName,dateField.getText().toString(),timeLabel.getText().toString(),Integer.parseInt(amountField.getText().toString().trim()),IDField.getText().toString()+"  "+nameField.getText().toString(),"official payment"));
 						    baip.close();
 						    ois1.close();
 						    PreparedStatement updateStatement=temp.prepareStatement("UPDATE employees SET employeeID= '"+list.getSelectedValue().toString().substring(0,9)+"',object=?;");
@@ -588,7 +618,7 @@ public class EmployeeWindow {
 						    rs.close();
 						    selectStatement.close();
 						    temp.close();
-						    AccountWindow.add_payment(dateField.getText().toString(), new Payment(Animation.userName,dateField.getText().toString(),Integer.parseInt(amountField.getText().toString().trim()),IDField.getText().toString()+"  "+nameField.getText().toString(),"official payment"));
+						    AccountWindow.add_payment(dateField.getText().toString(),timeLabel.getText().toString(), new Payment(Animation.userName,dateField.getText().toString(),timeLabel.getText().toString(),Integer.parseInt(amountField.getText().toString().trim()),IDField.getText().toString()+"  "+nameField.getText().toString(),"official payment"));
 						}
 						catch(SQLException e)
 						{
@@ -638,6 +668,68 @@ public class EmployeeWindow {
 		scrollPane_1.setBackground(new Color(0,51,102));
 		
 		list = new JList<String>(employeeListModel);
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(arg0.getClickCount()==2)
+				{
+					if(list.getSelectedIndex()>-1)
+					{
+						try {
+							Connection temp=sqlConnection.dbConnection();
+							ResultSet rs=temp.createStatement().executeQuery("SELECT object FROM employees WHERE employeeID='"+list.getSelectedValue().toString().substring(0,9)+"';");
+							byte[] byteStream = (byte[]) rs.getObject(1);
+						    ByteArrayInputStream baip = new ByteArrayInputStream(byteStream);
+						    ObjectInputStream ois1 = new ObjectInputStream(baip);
+						    Employee dummy=(Employee) ois1.readObject();
+							nameField.setText(dummy.get_name());
+							emailField.setText(dummy.get_email());
+							cellField.setText(dummy.get_cellNumber());
+							presentAddressField.setText(dummy.get_presentAddress());
+							IDField.setText(dummy.get_ID());
+							salaryField.setText(Integer.toString(dummy.get_salaryPerMonth()));
+							designationField.setText(dummy.get_designation());
+							imageLabel.setIcon(dummy.get_picture());
+							spouseNameField.setText(dummy.get_spouseName());
+							fatherNameField.setText(dummy.get_fatherName());
+							motherNameField.setText(dummy.get_motherName());
+							permanentAddressField.setText(dummy.get_permanentAddress());
+							NIDField.setText(dummy.get_NID());
+							DefaultTableModel model = (DefaultTableModel) salaryTable.getModel();
+							model.setRowCount(0);
+							
+							for(int index=0;index<dummy.get_payments().size();index++)
+							{
+								model.addRow(new Object[]{dummy.get_payments().elementAt(index).get_payment_date(),dummy.get_payments().elementAt(index).get_paid_amount(),dummy.get_payments().elementAt(index).get_paidBy_name()});
+							}
+							ois1.close();
+						    baip.close();
+							rs.close();
+							temp.close();
+							IDField.setEditable(false);
+							NIDField.setEditable(false);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		});
 		list.setForeground(Color.WHITE);
 		list.setBackground(new Color(0,51,102));
 		list.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -646,6 +738,54 @@ public class EmployeeWindow {
 		//scrollPane_1.setBorder(BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),"Employees",TitledBorder.CENTER,TitledBorder.TOP,new Font("times new roman",Font.PLAIN,15), Color.WHITE));
 		
 		quickSearchText = new JTextField();
+		quickSearchText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode()==KeyEvent.VK_ENTER){
+					try
+					{
+						String foundEmployee=new String();
+						Connection temp=sqlConnection.dbConnection();
+						ResultSet rs=temp.createStatement().executeQuery("SELECT object FROM employees;");
+						while(rs.next())
+						{
+							byte[] byteStream = (byte[]) rs.getObject(1);
+						    ByteArrayInputStream baip = new ByteArrayInputStream(byteStream);
+						    ObjectInputStream ois1 = new ObjectInputStream(baip);
+						    Employee dummy=(Employee) ois1.readObject();
+							if(quickSearchText.getText().trim().toString().equals(dummy.get_NID())||quickSearchText.getText().trim().toString().equals(dummy.get_ID())||quickSearchText.getText().trim().toString().equals(dummy.get_name())||quickSearchText.getText().trim().toString().equals(dummy.get_passportNo()))
+							{
+								foundEmployee=dummy.get_ID()+" "+dummy.get_name();
+								ois1.close();
+								baip.close();
+								break;
+							}
+							ois1.close();
+							baip.close();
+						}
+						rs.close();
+						temp.close();
+						for(int index=0;index<employeeListModel.size();index++)
+						{
+							if(employeeListModel.getElementAt(index).equalsIgnoreCase(foundEmployee))
+							{
+								list.setSelectedIndex(index);
+							}
+						}
+					}
+					catch(SQLException e)
+					{
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        }
+			}
+		});
 		quickSearchText.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		quickSearchText.setHorizontalAlignment(SwingConstants.CENTER);
@@ -779,6 +919,14 @@ public class EmployeeWindow {
 		JLabel lblAddupdate = new JLabel("add/update");
 		lblAddupdate.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				JPanel panel = new JPanel();
 				JLabel label = new JLabel("Enter a password:");
@@ -877,6 +1025,16 @@ public class EmployeeWindow {
 		frame.getContentPane().add(lblAddupdate);
 		
 		JLabel lblClear = new JLabel("clear");
+		lblClear.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
 		lblClear.setHorizontalAlignment(SwingConstants.LEFT);
 		lblClear.setForeground(new Color(0, 0, 102));
 		lblClear.setFont(new Font("Tahoma", Font.BOLD, 13));
